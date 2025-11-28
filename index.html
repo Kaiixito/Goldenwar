@@ -1,0 +1,2084 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GOLDENWAR - Marketplace de Servicios Locales</title>
+
+  <!-- Fuentes (requiere internet para cargarlas) -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --color-bg: #000000;
+      --color-bg-alt: #0b0b0d;
+      --color-card: #111111;
+      --color-gold: #d4af37;
+      --color-gold-soft: #f4d06f;
+      --color-text: #ffffff;
+      --color-muted: #9ca3af;
+      --color-border: #1f2933;
+
+      --font-heading: "Playfair Display", serif;
+      --font-body: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+      --radius-card: 1.25rem;
+      --shadow-soft: 0 22px 60px rgba(0, 0, 0, 0.75);
+      --transition-fast: 0.18s ease-out;
+      --max-width: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: radial-gradient(circle at top, #151515 0, #000 55%);
+      color: var(--color-text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .page {
+      min-height: 100vh;
+      color: var(--color-text);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.75));
+      border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+    }
+
+    .nav {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .logo-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .logo-text {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      letter-spacing: 0.18em;
+      color: var(--color-gold);
+      text-transform: uppercase;
+    }
+
+    .logo-underline {
+      width: 100%;
+      max-width: 180px;
+      height: 2px;
+      margin-top: 0.25rem;
+      background: linear-gradient(90deg, var(--color-gold), transparent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.2rem;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .nav-links a {
+      color: var(--color-muted);
+      padding-bottom: 0.15rem;
+      border-bottom: 1px solid transparent;
+      cursor: pointer;
+      transition: color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .nav-links a:hover {
+      color: var(--color-gold-soft);
+      border-color: var(--color-gold-soft);
+      transform: translateY(-1px);
+    }
+
+    .nav-cta {
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 0.55rem 1.1rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--color-text);
+      cursor: pointer;
+      transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--color-gold), var(--color-gold-soft));
+      color: #000;
+      box-shadow: 0 12px 30px rgba(212, 175, 55, 0.4);
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 40px rgba(212, 175, 55, 0.55);
+    }
+
+    .btn-outline {
+      border-color: rgba(212, 175, 55, 0.7);
+      color: var(--color-gold-soft);
+    }
+
+    .btn-outline:hover {
+      background: rgba(212, 175, 55, 0.12);
+      transform: translateY(-1px);
+    }
+
+    main {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 1.8rem 1.5rem 3rem;
+    }
+
+    section {
+      margin-bottom: 3.5rem;
+    }
+
+    .section-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .section-kicker {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--color-gold-soft);
+      margin-bottom: 0.4rem;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 1.9rem;
+      letter-spacing: 0.05em;
+    }
+
+    .section-description {
+      margin-top: 0.4rem;
+      color: var(--color-muted);
+      font-size: 0.95rem;
+      max-width: 560px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.4fr);
+      gap: 2.3rem;
+      align-items: center;
+      padding-top: 1.5rem;
+      padding-bottom: 2.4rem;
+    }
+
+    .hero-heading {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 4vw, 2.7rem);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.9rem;
+    }
+
+    .hero-highlight {
+      color: var(--color-gold-soft);
+    }
+
+    .hero-text {
+      color: var(--color-muted);
+      font-size: 0.97rem;
+      max-width: 520px;
+      margin-bottom: 1.1rem;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .badge {
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      font-size: 0.72rem;
+      color: var(--color-gold-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .hero-note {
+      font-size: 0.8rem;
+      color: var(--color-muted);
+    }
+
+    .hero-card {
+      background: radial-gradient(circle at top, #272727 0, #050607 45%, #000 100%);
+      border-radius: var(--radius-card);
+      padding: 1.4rem 1.3rem;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(212, 175, 55, 0.22);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .hero-card-heading {
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-gold-soft);
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.8rem;
+      font-size: 0.8rem;
+    }
+
+    .hero-stat {
+      padding: 0.7rem 0.6rem;
+      border-radius: 0.9rem;
+      background: rgba(9, 9, 11, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    .hero-stat-label {
+      color: var(--color-muted);
+      font-size: 0.7rem;
+      margin-bottom: 0.1rem;
+    }
+
+    .hero-stat-value {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .rating {
+      color: var(--color-gold-soft);
+      font-size: 0.85rem;
+    }
+
+    .hero-worker {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.7rem 0.6rem;
+      border-radius: 0.9rem;
+      background: rgba(9, 9, 11, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.85);
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #4b5563, #111827);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      border: 1px solid rgba(212, 175, 55, 0.45);
+    }
+
+    .hero-worker-main {
+      font-size: 0.78rem;
+    }
+
+    .hero-worker-main strong {
+      display: block;
+      font-size: 0.85rem;
+    }
+
+    .hero-pill {
+      margin-left: auto;
+      font-size: 0.7rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(22, 163, 74, 0.17);
+      border: 1px solid rgba(34, 197, 94, 0.7);
+      color: #bbf7d0;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.2rem;
+    }
+
+    .step-card {
+      background: linear-gradient(145deg, #050607, #111827);
+      border-radius: var(--radius-card);
+      padding: 1rem 1rem;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.8);
+    }
+
+    .step-icon {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .step-title {
+      font-size: 0.98rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .step-text {
+      font-size: 0.85rem;
+      color: var(--color-muted);
+    }
+
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.2rem;
+    }
+
+    .role-card {
+      background: radial-gradient(circle at top left, #111827 0, #020617 60%);
+      border-radius: var(--radius-card);
+      padding: 1.1rem 1.1rem;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .role-badge {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--color-gold-soft);
+      margin-bottom: 0.4rem;
+    }
+
+    .role-title {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .role-text {
+      font-size: 0.86rem;
+      color: var(--color-muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .role-list {
+      list-style: none;
+      padding-left: 0;
+      font-size: 0.84rem;
+      color: var(--color-text);
+      margin-bottom: 0.7rem;
+    }
+
+    .role-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.4rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .role-list span {
+      color: var(--color-gold-soft);
+      margin-top: 0.08rem;
+    }
+
+    .card {
+      background: radial-gradient(circle at top, #111827 0, #020617 60%);
+      border-radius: var(--radius-card);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 1.2rem 1.1rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .tabs {
+      display: inline-flex;
+      padding: 0.25rem;
+      border-radius: 999px;
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      margin-bottom: 1rem;
+      background: rgba(15, 23, 42, 0.85);
+    }
+
+    .tab-btn {
+      border-radius: 999px;
+      border: none;
+      background: transparent;
+      color: var(--color-muted);
+      font-size: 0.78rem;
+      padding: 0.35rem 0.9rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--color-gold), var(--color-gold-soft));
+      color: #000;
+      transform: translateY(-1px);
+    }
+
+    form {
+      display: grid;
+      gap: 0.7rem;
+      margin-top: 0.3rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.18rem;
+    }
+
+    .field label {
+      font-size: 0.78rem;
+      color: var(--color-muted);
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 0.6rem;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 0.55rem 0.6rem;
+      font-size: 0.84rem;
+      color: var(--color-text);
+      outline: none;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+      resize: vertical;
+      min-height: 0;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--color-gold-soft);
+      box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.6);
+      background: rgba(15, 23, 42, 1);
+    }
+
+    .helper {
+      font-size: 0.74rem;
+      color: var(--color-muted);
+    }
+
+    .search-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 2.2fr);
+      gap: 1.2rem;
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.6rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .worker-list {
+      display: grid;
+      gap: 0.7rem;
+      max-height: 320px;
+      overflow-y: auto;
+      padding-right: 0.3rem;
+    }
+
+    .worker-card {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 0.7rem;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.92);
+      border-radius: 0.9rem;
+      padding: 0.6rem 0.7rem;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      cursor: pointer;
+      transition: border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+    }
+
+    .worker-card:hover {
+      border-color: rgba(212, 175, 55, 0.8);
+      transform: translateY(-1px);
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.8);
+      background: radial-gradient(circle at top left, #111827 0, #020617 60%);
+    }
+
+    .worker-meta {
+      font-size: 0.8rem;
+    }
+
+    .worker-meta strong {
+      display: block;
+      font-size: 0.9rem;
+    }
+
+    .worker-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      margin-top: 0.25rem;
+    }
+
+    .tag {
+      font-size: 0.68rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 1);
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      color: var(--color-muted);
+    }
+
+    .worker-rating {
+      text-align: right;
+      font-size: 0.8rem;
+    }
+
+    .worker-rating .stars {
+      color: var(--color-gold-soft);
+      margin-bottom: 0.1rem;
+    }
+
+    .profile-card {
+      background: radial-gradient(circle at top right, #111827 0, #020617 55%);
+      border-radius: var(--radius-card);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 1rem 1rem;
+      box-shadow: var(--shadow-soft);
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 0.9rem;
+      align-items: flex-start;
+    }
+
+    .profile-main h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.15rem;
+    }
+
+    .profile-detail {
+      font-size: 0.8rem;
+      color: var(--color-muted);
+      margin-bottom: 0.3rem;
+    }
+
+    .profile-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .pill {
+      font-size: 0.7rem;
+      border-radius: 999px;
+      padding: 0.2rem 0.55rem;
+      border: 1px solid rgba(156, 163, 175, 0.7);
+      color: var(--color-muted);
+    }
+
+    .pill-gold {
+      border-color: rgba(212, 175, 55, 0.9);
+      color: var(--color-gold-soft);
+    }
+
+    .profile-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.4rem;
+    }
+
+    .chat-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 2.2fr);
+      gap: 1.1rem;
+      margin-top: 1.1rem;
+    }
+
+    .chat-sidebar {
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 1rem;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 0.6rem;
+      display: grid;
+      gap: 0.35rem;
+      font-size: 0.8rem;
+    }
+
+    .chat-contact {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.35rem 0.45rem;
+      border-radius: 0.8rem;
+      cursor: pointer;
+      transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+      border: 1px solid transparent;
+    }
+
+    .chat-contact.active,
+    .chat-contact:hover {
+      background: rgba(15, 23, 42, 1);
+      border-color: rgba(212, 175, 55, 0.7);
+      transform: translateY(-1px);
+    }
+
+    .chat-main {
+      background: rgba(15, 23, 42, 0.98);
+      border-radius: 1rem;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      padding: 0.7rem 0.75rem;
+      gap: 0.5rem;
+      font-size: 0.82rem;
+    }
+
+    .chat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+      padding-bottom: 0.4rem;
+    }
+
+    .chat-header-info {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .chat-messages {
+      padding: 0.4rem 0;
+      display: grid;
+      gap: 0.25rem;
+      overflow-y: auto;
+    }
+
+    .bubble {
+      max-width: 75%;
+      padding: 0.38rem 0.55rem;
+      border-radius: 0.9rem;
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+
+    .bubble-client {
+      justify-self: flex-start;
+      background: rgba(17, 24, 39, 0.95);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+    }
+
+    .bubble-worker {
+      justify-self: flex-end;
+      background: linear-gradient(135deg, var(--color-gold), var(--color-gold-soft));
+      color: #000;
+    }
+
+    .chat-input {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      padding-top: 0.4rem;
+    }
+
+    .chat-input input {
+      flex: 1;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 0.45rem 0.7rem;
+      background: rgba(15, 23, 42, 1);
+      font-size: 0.82rem;
+      color: var(--color-text);
+      outline: none;
+    }
+
+    .chat-input input:focus {
+      border-color: var(--color-gold-soft);
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 2.1fr);
+      gap: 1.2rem;
+    }
+
+    .review-card {
+      background: rgba(15, 23, 42, 0.98);
+      border-radius: 1rem;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 0.8rem 0.8rem;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 0.7rem;
+      font-size: 0.8rem;
+    }
+
+    .review-main {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .review-name {
+      font-weight: 600;
+    }
+
+    .review-stars {
+      color: var(--color-gold-soft);
+      font-size: 0.85rem;
+    }
+
+    .review-text {
+      color: var(--color-muted);
+    }
+
+    .rating-summary {
+      background: radial-gradient(circle at top, #111827 0, #020617 60%);
+      border-radius: 1rem;
+      padding: 0.9rem;
+      border: 1px solid rgba(212, 175, 55, 0.6);
+      box-shadow: var(--shadow-soft);
+      font-size: 0.86rem;
+    }
+
+    .rating-score {
+      font-size: 2rem;
+      font-family: var(--font-heading);
+      color: var(--color-gold-soft);
+      margin-bottom: 0.1rem;
+    }
+
+    .rating-stars-big {
+      color: var(--color-gold-soft);
+      margin-bottom: 0.25rem;
+    }
+
+    .rating-meta {
+      font-size: 0.8rem;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .login-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 2.1fr);
+      gap: 1.2rem;
+    }
+
+    .dashboard-card {
+      background: radial-gradient(circle at top, #111827 0, #020617 60%);
+      border-radius: var(--radius-card);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 1rem 1rem;
+      box-shadow: var(--shadow-soft);
+      font-size: 0.85rem;
+    }
+
+    footer {
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      padding: 1.3rem 1.5rem 1.6rem;
+      background: #020617;
+      font-size: 0.8rem;
+      color: var(--color-muted);
+    }
+
+    .footer-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    @media (max-width: 960px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .search-layout,
+      .roles-grid,
+      .steps-grid,
+      .chat-layout,
+      .reviews-grid,
+      .login-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .nav {
+        flex-wrap: wrap;
+        row-gap: 0.6rem;
+      }
+      .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .nav-cta {
+        margin-left: auto;
+      }
+    }
+
+    @media (max-width: 640px) {
+      main {
+        padding-inline: 1rem;
+      }
+      .nav {
+        padding-inline: 1rem;
+      }
+      .hero {
+        padding-bottom: 1.8rem;
+      }
+      .section-title {
+        font-size: 1.5rem;
+      }
+      .nav-cta {
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <nav class="nav">
+        <div class="logo-wrapper">
+          <div class="logo-text">GOLDENWAR</div>
+          <div class="logo-underline"></div>
+        </div>
+        <div class="nav-links">
+          <a data-scroll="#inicio">Inicio</a>
+          <a data-scroll="#como-funciona">Cómo funciona</a>
+          <a data-scroll="#roles">Roles</a>
+          <a data-scroll="#registro">Registro</a>
+          <a data-scroll="#buscar">Buscar</a>
+          <a data-scroll="#evaluaciones">Evaluaciones</a>
+          <a data-scroll="#login">Login</a>
+          <a data-scroll="#dashboard">Panel</a>
+        </div>
+        <div class="nav-cta">
+          <button class="btn btn-outline" data-scroll="#registro">Soy Cliente</button>
+          <button class="btn btn-gold" data-scroll="#registro">Soy Trabajador</button>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <!-- INICIO -->
+      <section id="inicio">
+        <div class="hero">
+          <div>
+            <div class="section-kicker">Marketplace de servicios locales</div>
+            <h1 class="hero-heading">
+              Conecta <span class="hero-highlight">clientes</span> y <span class="hero-highlight">trabajadores</span> en tu área.
+            </h1>
+            <p class="hero-text">
+              GOLDENWAR es una plataforma diseñada para que las personas puedan ofrecer sus habilidades
+              domésticas, académicas o técnicas, mientras los clientes encuentran ayuda confiable cerca de ellos.
+            </p>
+            <div class="hero-badges">
+              <div class="badge">Pagos en efectivo o Yappy</div>
+              <div class="badge">Calificaciones 1–5 estrellas</div>
+              <div class="badge">Perfiles verificados</div>
+            </div>
+            <div class="hero-actions">
+              <button class="btn btn-gold" data-scroll="#registro">Crear cuenta</button>
+              <button class="btn btn-outline" data-scroll="#buscar">Ver trabajadores</button>
+            </div>
+            <p class="hero-note">
+              Versión demo funcional para proyecto semestral: registro, login, perfiles, chat y evaluaciones simulados en el navegador.
+            </p>
+          </div>
+          <aside class="hero-card">
+            <div>
+              <h2 class="hero-card-heading">Resumen en tiempo real (demo)</h2>
+              <p class="hero-text" style="margin-bottom: 0.7rem;">
+                Ejemplo de cómo se vería un panel de indicadores en la plataforma GOLDENWAR.
+              </p>
+            </div>
+            <div class="hero-stats" id="hero-stats">
+              <div class="hero-stat">
+                <div class="hero-stat-label">Trabajadores registrados</div>
+                <div class="hero-stat-value" id="stat-trabajadores">4</div>
+              </div>
+              <div class="hero-stat">
+                <div class="hero-stat-label">Clientes registrados</div>
+                <div class="hero-stat-value" id="stat-clientes">0</div>
+              </div>
+              <div class="hero-stat">
+                <div class="hero-stat-label">Reseñas registradas</div>
+                <div class="hero-stat-value rating" id="stat-resenas">3</div>
+              </div>
+            </div>
+            <div class="hero-worker">
+              <div class="avatar">MS</div>
+              <div class="hero-worker-main">
+                <strong>María Sánchez</strong>
+                Tutoría de Matemáticas · <span class="rating" id="stat-rating-global">★ 4.8 promedio</span>
+              </div>
+              <div class="hero-pill">Top en zona centro</div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- CÓMO FUNCIONA -->
+      <section id="como-funciona">
+        <div class="section-header">
+          <div class="section-kicker">Flujo general</div>
+          <h2 class="section-title">¿Cómo funciona GOLDENWAR?</h2>
+          <p class="section-description">
+            La plataforma se estructura en pasos simples para que tanto clientes como trabajadores puedan usarla sin complicaciones.
+          </p>
+        </div>
+        <div class="steps-grid">
+          <article class="step-card">
+            <div class="step-icon">📝</div>
+            <h3 class="step-title">1. Registro</h3>
+            <p class="step-text">
+              El usuario selecciona si es cliente o trabajador y completa un formulario con datos básicos. En esta demo, la información se guarda en el navegador.
+            </p>
+          </article>
+          <article class="step-card">
+            <div class="step-icon">🔎</div>
+            <h3 class="step-title">2. Búsqueda y contacto</h3>
+            <p class="step-text">
+              Los clientes filtran trabajadores por categoría, zona y tarifa, revisan sus estadísticas y pueden iniciar una conversación por chat.
+            </p>
+          </article>
+          <article class="step-card">
+            <div class="step-icon">⭐</div>
+            <h3 class="step-title">3. Servicio y evaluación</h3>
+            <p class="step-text">
+              Tras el servicio, el cliente califica de 1 a 5 estrellas y agrega un comentario. Esto fortalece la reputación de cada trabajador.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ROLES -->
+      <section id="roles">
+        <div class="section-header">
+          <div class="section-kicker">Tipos de usuario</div>
+          <h2 class="section-title">Dos roles principales en GOLDENWAR</h2>
+          <p class="section-description">
+            El diseño se basa en la interacción entre quienes necesitan ayuda y quienes desean ofrecer sus habilidades de forma remunerada.
+          </p>
+        </div>
+        <div class="roles-grid">
+          <article class="role-card">
+            <div class="role-badge">Cliente</div>
+            <h3 class="role-title">Personas que buscan un servicio</h3>
+            <p class="role-text">
+              Pueden solicitar apoyo doméstico, académico o técnico, filtrando por zona, precio y calificación.
+            </p>
+            <ul class="role-list">
+              <li><span>•</span> Registro rápido con nombre, correo y zona.</li>
+              <li><span>•</span> Acceso a un panel con recomendaciones.</li>
+              <li><span>•</span> Chat para coordinar detalles con trabajadores.</li>
+              <li><span>•</span> Sistema de evaluación con estrellas y reseñas.</li>
+            </ul>
+            <button class="btn btn-outline" data-scroll="#registro">Registrarme como cliente</button>
+          </article>
+          <article class="role-card">
+            <div class="role-badge">Trabajador</div>
+            <h3 class="role-title">Personas que ofrecen sus habilidades</h3>
+            <p class="role-text">
+              Crean un perfil tipo currículum y aparecen en los resultados de búsqueda según su categoría y zona.
+            </p>
+            <ul class="role-list">
+              <li><span>•</span> Perfil con experiencia, servicios y tarifas.</li>
+              <li><span>•</span> Panel con estadísticas y reseñas recibidas.</li>
+              <li><span>•</span> Contacto directo con clientes.</li>
+              <li><span>•</span> Impacto económico a nivel local.</li>
+            </ul>
+            <button class="btn btn-gold" data-scroll="#registro">Crear perfil de trabajador</button>
+          </article>
+        </div>
+      </section>
+
+      <!-- REGISTRO -->
+      <section id="registro">
+        <div class="section-header">
+          <div class="section-kicker">Comienza aquí</div>
+          <h2 class="section-title">Registro de usuarios</h2>
+          <p class="section-description">
+            A continuación se presentan formularios funcionales que almacenan la información en el navegador usando localStorage.
+          </p>
+        </div>
+        <div class="card">
+          <div class="tabs">
+            <button class="tab-btn active" data-tab="cliente">Cliente</button>
+            <button class="tab-btn" data-tab="trabajador">Trabajador</button>
+          </div>
+
+          <!-- Formulario Cliente -->
+          <form id="form-cliente" class="tab-panel" data-tab-panel="cliente">
+            <div class="field">
+              <label for="cliente-nombre">Nombre completo</label>
+              <input id="cliente-nombre" type="text" placeholder="Ejemplo: Ana López" />
+            </div>
+            <div class="field">
+              <label for="cliente-email">Correo electrónico</label>
+              <input id="cliente-email" type="email" placeholder="nombre@correo.com" />
+            </div>
+            <div class="field">
+              <label for="cliente-zona">Zona o comunidad</label>
+              <input id="cliente-zona" type="text" placeholder="Ejemplo: Pueblo Nuevo, Betania..." />
+            </div>
+            <div class="field">
+              <label for="cliente-password">Contraseña</label>
+              <input id="cliente-password" type="password" placeholder="Crea una contraseña" />
+            </div>
+            <p class="helper">
+              *Este formulario guarda los datos en el navegador local para efectos de demostración.
+            </p>
+            <button type="button" class="btn btn-gold" id="btn-registrar-cliente">Registrarme como cliente</button>
+          </form>
+
+          <!-- Formulario Trabajador -->
+          <form id="form-trabajador" class="tab-panel" data-tab-panel="trabajador" style="display:none;">
+            <div class="field">
+              <label for="trabajador-nombre">Nombre completo</label>
+              <input id="trabajador-nombre" type="text" placeholder="Ejemplo: Carlos Mendoza" />
+            </div>
+            <div class="field">
+              <label for="trabajador-email">Correo electrónico</label>
+              <input id="trabajador-email" type="email" placeholder="correo@ejemplo.com" />
+            </div>
+            <div class="field">
+              <label for="trabajador-oficio">Servicio o habilidad principal</label>
+              <input id="trabajador-oficio" type="text" placeholder="Ejemplo: Tutor de matemáticas, limpieza de hogares..." />
+            </div>
+            <div class="field">
+              <label for="trabajador-experiencia">Experiencia</label>
+              <textarea id="trabajador-experiencia" rows="3" placeholder="Breve resumen de experiencia, cursos o certificaciones."></textarea>
+            </div>
+            <div class="field">
+              <label for="trabajador-tarifa">Tarifa aproximada</label>
+              <input id="trabajador-tarifa" type="text" placeholder="Ejemplo: B/. 8.00 por hora" />
+            </div>
+            <div class="field">
+              <label for="trabajador-zona">Zona o comunidad donde trabaja</label>
+              <input id="trabajador-zona" type="text" placeholder="Ejemplo: San Miguelito, Tocumen, etc." />
+            </div>
+            <div class="field">
+              <label for="trabajador-password">Contraseña</label>
+              <input id="trabajador-password" type="password" placeholder="Crea una contraseña" />
+            </div>
+            <p class="helper">
+              *Este perfil se agrega a la lista de trabajadores y queda guardado localmente para la demo.
+            </p>
+            <button type="button" class="btn btn-gold" id="btn-registrar-trabajador">Crear perfil de trabajador</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- BUSCAR TRABAJADORES + PERFIL + CHAT -->
+      <section id="buscar">
+        <div class="section-header">
+          <div class="section-kicker">Explorar</div>
+          <h2 class="section-title">Búsqueda de trabajadores</h2>
+          <p class="section-description">
+            Aquí se muestran trabajadores de ejemplo y los que se registren desde el formulario. Los filtros actúan en tiempo real.
+          </p>
+        </div>
+
+        <div class="search-layout">
+          <div class="card">
+            <div class="field">
+              <label for="buscar-texto">¿Qué servicio necesitas?</label>
+              <input id="buscar-texto" type="text" placeholder="Ejemplo: limpieza, tutoría de inglés, electricidad..." />
+            </div>
+            <div class="filters">
+              <div class="field">
+                <label for="filtro-servicio">Categoría</label>
+                <select id="filtro-servicio">
+                  <option value="">Cualquiera</option>
+                  <option value="domestico">Servicios domésticos</option>
+                  <option value="tutoria">Tutorías</option>
+                  <option value="tecnico">Servicios técnicos</option>
+                  <option value="cuidado">Cuidado y acompañamiento</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="filtro-zona">Zona</label>
+                <select id="filtro-zona">
+                  <option value="">Todas</option>
+                  <option value="centro">Centro</option>
+                  <option value="norte">Zona norte</option>
+                  <option value="sur">Zona sur</option>
+                </select>
+              </div>
+            </div>
+            <p class="helper">
+              *La información se carga desde un arreglo y desde localStorage. Ideal para explicar el flujo de datos en la exposición.
+            </p>
+            <div class="worker-list" id="worker-list"></div>
+          </div>
+
+          <div id="perfil">
+            <div class="profile-card" id="profile-card">
+              <div class="avatar" id="profile-avatar" style="width:56px;height:56px;font-size:1.1rem;">MS</div>
+              <div class="profile-main">
+                <h3 id="profile-name">Perfil de ejemplo: María Sánchez</h3>
+                <div class="profile-detail" id="profile-summary">
+                  Tutorías de Matemáticas · Zona centro · Disponible tardes de lunes a viernes.
+                </div>
+                <div class="profile-badges">
+                  <span class="pill pill-gold" id="profile-rating-pill">★★★★★ 4.9</span>
+                  <span class="pill" id="profile-reviews-pill">38 reseñas</span>
+                  <span class="pill" id="profile-rate-pill">B/. 10 / hora</span>
+                  <span class="pill" id="profile-mode-pill">Modalidad a domicilio</span>
+                </div>
+                <p class="profile-detail" id="profile-description">
+                  María ofrece refuerzos personalizados en álgebra, geometría y preparación para exámenes. Trabaja con estudiantes de primaria y secundaria.
+                </p>
+                <div class="profile-actions">
+                  <button class="btn btn-gold" data-scroll="#chat">Abrir chat</button>
+                  <button class="btn btn-outline" data-scroll="#evaluaciones">Ver reseñas</button>
+                  <button class="btn btn-outline" data-scroll="#evaluaciones" id="btn-calificar">Calificar trabajador</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="chat-layout" id="chat">
+              <aside class="chat-sidebar">
+                <div class="chat-contact active">
+                  <div class="avatar" style="width:30px;height:30px;font-size:0.75rem;">CL</div>
+                  <div>
+                    <div id="chat-contact-name">Cliente actual</div>
+                    <div style="font-size:0.75rem;color:var(--color-muted);">Demo · conversación local</div>
+                  </div>
+                </div>
+                <div class="chat-contact">
+                  <div class="avatar" style="width:30px;height:30px;font-size:0.75rem;">MS</div>
+                  <div>
+                    <div>Trabajador: María Sánchez</div>
+                    <div style="font-size:0.75rem;color:var(--color-muted);">Top en tutorías</div>
+                  </div>
+                </div>
+              </aside>
+              <section class="chat-main">
+                <div class="chat-header">
+                  <div class="chat-header-info">
+                    <div class="avatar" style="width:32px;height:32px;font-size:0.78rem;">MS</div>
+                    <div>
+                      <div style="font-size:0.86rem;" id="chat-title">Chat con María Sánchez</div>
+                      <div style="font-size:0.76rem;color:var(--color-muted);" id="chat-subtitle">
+                        Interfaz de chat de ejemplo, mensajes guardados en el navegador.
+                      </div>
+                    </div>
+                  </div>
+                  <span style="font-size:0.76rem;color:var(--color-gold-soft);">Demo educativa</span>
+                </div>
+                <div class="chat-messages" id="chat-messages"></div>
+                <div class="chat-input">
+                  <input type="text" id="chat-input-text" placeholder="Escribe un mensaje (se guarda en localStorage)..." />
+                  <button class="btn btn-gold" type="button" id="chat-send-btn">Enviar</button>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EVALUACIONES -->
+      <section id="evaluaciones">
+        <div class="section-header">
+          <div class="section-kicker">Calidad del servicio</div>
+          <h2 class="section-title">Sistema de evaluaciones</h2>
+          <p class="section-description">
+            Las calificaciones permiten medir la experiencia de los clientes con cada trabajador. En esta demo, las reseñas se guardan en el navegador.
+          </p>
+        </div>
+
+        <div class="reviews-grid">
+          <aside class="rating-summary">
+            <div class="rating-score" id="rating-score">4.8</div>
+            <div class="rating-stars-big" id="rating-stars-big">★★★★★</div>
+            <div class="rating-meta" id="rating-meta">Promedio general de 3 reseñas.</div>
+            <p>
+              Cada cliente puede dejar una calificación en estrellas y un comentario. Esto alimenta el promedio visible en la tarjeta del trabajador.
+            </p>
+            <p style="margin-top:0.5rem;">
+              En una implementación completa, estos datos se guardarían en una base de datos remoto. En esta demo, se utiliza localStorage.
+            </p>
+          </aside>
+
+          <div class="card" style="display:grid;gap:0.7rem;" id="reviews-container">
+            <!-- Reseñas se cargan dinámicamente -->
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:1.5rem;">
+          <div class="section-kicker">Nueva evaluación</div>
+          <h3 class="section-title" style="font-size:1.3rem;">Agregar una reseña</h3>
+          <p class="section-description">
+            Si has iniciado sesión como cliente, puedes registrar una nueva reseña para el trabajador seleccionado.
+          </p>
+          <form id="review-form">
+            <div class="field">
+              <label for="review-nombre">Tu nombre (cliente)</label>
+              <input id="review-nombre" type="text" placeholder="Ejemplo: Ana López" />
+            </div>
+            <div class="field">
+              <label for="review-estrellas">Calificación</label>
+              <select id="review-estrellas">
+                <option value="5">5 estrellas</option>
+                <option value="4">4 estrellas</option>
+                <option value="3">3 estrellas</option>
+                <option value="2">2 estrellas</option>
+                <option value="1">1 estrella</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="review-texto">Comentario</label>
+              <textarea id="review-texto" rows="3" placeholder="Describe brevemente tu experiencia."></textarea>
+            </div>
+            <button type="button" class="btn btn-gold" id="btn-guardar-review">Enviar reseña</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- LOGIN Y DASHBOARD -->
+      <section id="login">
+        <div class="section-header">
+          <div class="section-kicker">Acceso</div>
+          <h2 class="section-title">Iniciar sesión</h2>
+          <p class="section-description">
+            Aquí se simula el inicio de sesión tanto para clientes como para trabajadores, usando la información almacenada en el navegador.
+          </p>
+        </div>
+
+        <div class="login-grid">
+          <div class="card">
+            <div class="field">
+              <label for="login-email">Correo electrónico</label>
+              <input id="login-email" type="email" placeholder="correo@ejemplo.com" />
+            </div>
+            <div class="field">
+              <label for="login-pass">Contraseña</label>
+              <input id="login-pass" type="password" placeholder="Ingresa tu contraseña" />
+            </div>
+            <div class="field">
+              <label for="login-rol">Rol</label>
+              <select id="login-rol">
+                <option value="cliente">Cliente</option>
+                <option value="trabajador">Trabajador</option>
+              </select>
+            </div>
+            <button class="btn btn-gold" id="btn-login" type="button">Iniciar sesión</button>
+            <p class="helper" id="login-helper">
+              *Si no tienes cuenta, regístrate primero en la sección de registro.
+            </p>
+          </div>
+
+          <div class="dashboard-card" id="dashboard-resumen">
+            <div class="section-kicker">Resumen de sesión</div>
+            <h3 class="section-title" style="font-size:1.3rem;">Estado actual</h3>
+            <p class="section-description" id="dashboard-resumen-texto">
+              No hay ninguna sesión activa. Cuando inicies sesión, aquí se mostrará un resumen rápido del cliente o trabajador conectado.
+            </p>
+            <button class="btn btn-outline hidden" id="btn-logout" type="button">Cerrar sesión</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="dashboard">
+        <div class="section-header">
+          <div class="section-kicker">Panel</div>
+          <h2 class="section-title">Panel del usuario</h2>
+          <p class="section-description">
+            El panel cambia según el rol con el que se inició sesión. En modo demo, se muestra la información clave en tarjetas separadas.
+          </p>
+        </div>
+
+        <div class="login-grid">
+          <div class="dashboard-card" id="dashboard-cliente" style="display:none;">
+            <div class="section-kicker">Cliente</div>
+            <h3 class="section-title" style="font-size:1.2rem;">Panel del cliente</h3>
+            <p><strong>Nombre:</strong> <span id="dash-cli-nombre"></span></p>
+            <p><strong>Correo:</strong> <span id="dash-cli-email"></span></p>
+            <p><strong>Zona:</strong> <span id="dash-cli-zona"></span></p>
+            <p style="margin-top:0.5rem;">
+              Desde este panel, el cliente puede:
+            </p>
+            <ul class="role-list">
+              <li><span>•</span> Buscar trabajadores recomendados según su zona.</li>
+              <li><span>•</span> Iniciar chats con trabajadores desde la sección de búsqueda.</li>
+              <li><span>•</span> Dejar reseñas después de cada servicio.</li>
+            </ul>
+            <button class="btn btn-outline" data-scroll="#buscar">Ir a buscar trabajadores</button>
+          </div>
+
+          <div class="dashboard-card" id="dashboard-trabajador" style="display:none;">
+            <div class="section-kicker">Trabajador</div>
+            <h3 class="section-title" style="font-size:1.2rem;">Panel del trabajador</h3>
+            <p><strong>Nombre:</strong> <span id="dash-tra-nombre"></span></p>
+            <p><strong>Correo:</strong> <span id="dash-tra-email"></span></p>
+            <p><strong>Zona:</strong> <span id="dash-tra-zona"></span></p>
+            <p><strong>Categoría:</strong> <span id="dash-tra-cat"></span></p>
+            <p style="margin-top:0.5rem;">
+              Este panel resume la actividad del trabajador:
+            </p>
+            <ul class="role-list">
+              <li><span>•</span> Cantidad de reseñas recibidas: <span id="dash-tra-resenas">0</span></li>
+              <li><span>•</span> Calificación promedio: <span id="dash-tra-promedio">N/A</span></li>
+              <li><span>•</span> Posibles mensajes en el chat con clientes.</li>
+            </ul>
+            <button class="btn btn-outline" data-scroll="#evaluaciones">Ver reseñas</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <div>
+          <strong style="color:var(--color-gold-soft);">GOLDENWAR</strong> · Proyecto semestral.
+        </div>
+        <div>
+          Diseño en negro y dorado.
+        </div>
+      </div>
+    </footer>
+  </div>
+  <script>
+    // ---------------------------
+    // Scroll suave
+    // ---------------------------
+    document.querySelectorAll("[data-scroll]").forEach(function (el) {
+      el.addEventListener("click", function () {
+        const target = document.querySelector(el.getAttribute("data-scroll"));
+        if (!target) return;
+        window.scrollTo({
+          top: target.offsetTop - 80,
+          behavior: "smooth"
+        });
+      });
+    });
+
+    // ---------------------------
+    // Tabs de registro
+    // ---------------------------
+    const tabButtons = document.querySelectorAll(".tab-btn");
+    const tabPanels = document.querySelectorAll(".tab-panel");
+
+    tabButtons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const target = btn.getAttribute("data-tab");
+        tabButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        tabPanels.forEach(function (panel) {
+          if (panel.getAttribute("data-tab-panel") === target) {
+            panel.style.display = "grid";
+          } else {
+            panel.style.display = "none";
+          }
+        });
+      });
+    });
+
+    // ---------------------------
+    // LocalStorage helpers
+    // ---------------------------
+    const STORAGE_WORKERS = "gw_workers";
+    const STORAGE_CLIENTS = "gw_clients";
+    const STORAGE_REVIEWS = "gw_reviews";
+    const STORAGE_CHAT = "gw_chat";
+    const STORAGE_SESSION = "gw_session";
+
+    function loadJSON(key, fallback) {
+      const raw = localStorage.getItem(key);
+      if (!raw) {
+        localStorage.setItem(key, JSON.stringify(fallback));
+        return fallback;
+      }
+      try {
+        return JSON.parse(raw);
+      } catch (e) {
+        console.error("Error parsing", key, e);
+        localStorage.setItem(key, JSON.stringify(fallback));
+        return fallback;
+      }
+    }
+
+    function saveJSON(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    // ---------------------------
+    // Datos iniciales
+    // ---------------------------
+    const initialWorkers = [
+      {
+        id: 1,
+        iniciales: "MS",
+        nombre: "María Sánchez",
+        email: "maria@goldenwar.test",
+        descripcion: "Tutorías de matemáticas y física para secundaria.",
+        categoria: "tutoria",
+        etiquetaCategoria: "Tutoría",
+        zona: "centro",
+        etiquetaZona: "Centro",
+        tarifa: "B/. 10 / hora",
+        estrellasProm: 4.9,
+        totalResenas: 3
+      },
+      {
+        id: 2,
+        iniciales: "JL",
+        nombre: "José López",
+        email: "jose@goldenwar.test",
+        descripcion: "Limpieza profunda de hogares y apartamentos.",
+        categoria: "domestico",
+        etiquetaCategoria: "Doméstico",
+        zona: "norte",
+        etiquetaZona: "Zona norte",
+        tarifa: "B/. 8 / hora",
+        estrellasProm: 4.3,
+        totalResenas: 2
+      },
+      {
+        id: 3,
+        iniciales: "RC",
+        nombre: "Rosa Cedeño",
+        email: "rosa@goldenwar.test",
+        descripcion: "Reparación básica de computadoras y configuración de redes.",
+        categoria: "tecnico",
+        etiquetaCategoria: "Técnico",
+        zona: "centro",
+        etiquetaZona: "Centro",
+        tarifa: "B/. 15 / servicio",
+        estrellasProm: 5.0,
+        totalResenas: 1
+      },
+      {
+        id: 4,
+        iniciales: "LG",
+        nombre: "Lucía González",
+        email: "lucia@goldenwar.test",
+        descripcion: "Cuidado de adultos mayores con acompañamiento y apoyo básico.",
+        categoria: "cuidado",
+        etiquetaCategoria: "Cuidado",
+        zona: "sur",
+        etiquetaZona: "Zona sur",
+        tarifa: "B/. 9 / hora",
+        estrellasProm: 4.5,
+        totalResenas: 1
+      }
+    ];
+
+    const initialReviews = [
+      {
+        id: 1,
+        workerId: 1,
+        nombre: "Ana López",
+        estrellas: 5,
+        texto: "María explicó los temas con mucha paciencia y claridad. Excelente apoyo para exámenes.",
+        fecha: "2025-01-05"
+      },
+      {
+        id: 2,
+        workerId: 2,
+        nombre: "Jorge García",
+        estrellas: 4,
+        texto: "El servicio de limpieza fue muy bueno y puntual. Detalles menores, pero quedé satisfecho.",
+        fecha: "2025-02-10"
+      },
+      {
+        id: 3,
+        workerId: 3,
+        nombre: "Carolina M.",
+        estrellas: 5,
+        texto: "Rosa dejó la computadora como nueva y explicó todo lo que hizo.",
+        fecha: "2025-03-02"
+      }
+    ];
+
+    const initialChat = [
+      {
+        id: 1,
+        autor: "cliente",
+        texto: "Hola, María. ¿Estarías disponible para una tutoría de álgebra mañana en la tarde?"
+      },
+      {
+        id: 2,
+        autor: "trabajador",
+        texto: "¡Hola! Sí, mañana tengo espacio de 3:00 p.m. a 6:00 p.m. ¿Qué horario te funciona mejor?"
+      },
+      {
+        id: 3,
+        autor: "cliente",
+        texto: "A las 4:00 p.m. me queda perfecto. ¿Podemos hacer la clase a domicilio?"
+      },
+      {
+        id: 4,
+        autor: "trabajador",
+        texto: "Claro, puedo ir a tu domicilio. El pago puede ser en efectivo o por Yappy."
+      }
+    ];
+
+    let workers = loadJSON(STORAGE_WORKERS, initialWorkers);
+    let clients = loadJSON(STORAGE_CLIENTS, []);
+    let reviews = loadJSON(STORAGE_REVIEWS, initialReviews);
+    let chatMessages = loadJSON(STORAGE_CHAT, initialChat);
+    let session = loadJSON(STORAGE_SESSION, null);
+
+    // ---------------------------
+    // Render de estadísticas
+    // ---------------------------
+    function actualizarEstadisticas() {
+      document.getElementById("stat-trabajadores").textContent = workers.length;
+      document.getElementById("stat-clientes").textContent = clients.length;
+      document.getElementById("stat-resenas").textContent = reviews.length;
+
+      const promedioGlobal =
+        reviews.length > 0
+          ? (reviews.reduce((acc, r) => acc + r.estrellas, 0) / reviews.length).toFixed(1)
+          : "N/A";
+      document.getElementById("stat-rating-global").textContent = `★ ${promedioGlobal} promedio`;
+    }
+    actualizarEstadisticas();
+
+    // ---------------------------
+    // Render de trabajadores
+    // ---------------------------
+    const workerListEl = document.getElementById("worker-list");
+    let selectedWorkerId = 1;
+
+    function crearWorkerCard(worker) {
+      const article = document.createElement("article");
+      article.className = "worker-card";
+      article.setAttribute("data-servicio", worker.categoria);
+      article.setAttribute("data-zona", worker.zona);
+      article.setAttribute("data-id", worker.id);
+
+      const estrellasStr = renderStars(worker.estrellasProm);
+
+      article.innerHTML = `
+        <div class="avatar">${worker.iniciales}</div>
+        <div class="worker-meta">
+          <strong>${worker.nombre}</strong>
+          ${worker.descripcion}
+          <div class="worker-tags">
+            <span class="tag">${worker.etiquetaCategoria}</span>
+            <span class="tag">${worker.etiquetaZona}</span>
+            <span class="tag">${worker.tarifa}</span>
+          </div>
+        </div>
+        <div class="worker-rating">
+          <div class="stars">${estrellasStr}</div>
+          <div>${worker.estrellasProm.toFixed(1)} · ${worker.totalResenas} reseñas</div>
+          <button class="btn btn-outline" style="margin-top:0.3rem;">
+            Ver perfil
+          </button>
+        </div>
+      `;
+
+      article.querySelector("button").addEventListener("click", function () {
+        selectedWorkerId = worker.id;
+        actualizarPerfil(worker.id);
+        window.scrollTo({ top: document.getElementById("perfil").offsetTop - 80, behavior: "smooth" });
+      });
+
+      return article;
+    }
+
+    function renderStars(value) {
+      const full = Math.round(value);
+      const stars = "★★★★★".slice(0, full) + "☆☆☆☆☆".slice(0, 5 - full);
+      return stars;
+    }
+
+    function renderWorkers() {
+      workerListEl.innerHTML = "";
+      workers.forEach(w => {
+        const card = crearWorkerCard(w);
+        workerListEl.appendChild(card);
+      });
+      aplicarFiltros();
+    }
+
+    renderWorkers();
+
+    // ---------------------------
+    // Filtros de búsqueda
+    // ---------------------------
+    const buscarTexto = document.getElementById("buscar-texto");
+    const filtroServicio = document.getElementById("filtro-servicio");
+    const filtroZona = document.getElementById("filtro-zona");
+
+    function aplicarFiltros() {
+      const texto = buscarTexto.value.toLowerCase();
+      const servicio = filtroServicio.value;
+      const zona = filtroZona.value;
+
+      document.querySelectorAll(".worker-card").forEach(card => {
+        const cardServicio = card.getAttribute("data-servicio");
+        const cardZona = card.getAttribute("data-zona");
+        const contenido = card.textContent.toLowerCase();
+
+        const coincideTexto = !texto || contenido.includes(texto);
+        const coincideServicio = !servicio || cardServicio === servicio;
+        const coincideZona = !zona || cardZona === zona;
+
+        card.style.display = coincideTexto && coincideServicio && coincideZona ? "grid" : "none";
+      });
+    }
+
+    [buscarTexto, filtroServicio, filtroZona].forEach(input => {
+      input.addEventListener("input", aplicarFiltros);
+      input.addEventListener("change", aplicarFiltros);
+    });
+
+    // ---------------------------
+    // Perfil de trabajador
+    // ---------------------------
+    function actualizarPerfil(workerId) {
+      const w = workers.find(x => x.id === workerId);
+      if (!w) return;
+
+      selectedWorkerId = workerId;
+
+      document.getElementById("profile-avatar").textContent = w.iniciales;
+      document.getElementById("profile-name").textContent = w.nombre;
+      document.getElementById("profile-summary").textContent = `${w.descripcion.split(" · ")[0]} · Zona ${w.etiquetaZona}`;
+      document.getElementById("profile-rating-pill").textContent = `${renderStars(w.estrellasProm)} ${w.estrellasProm.toFixed(1)}`;
+      document.getElementById("profile-reviews-pill").textContent = `${w.totalResenas} reseñas`;
+      document.getElementById("profile-rate-pill").textContent = w.tarifa;
+      document.getElementById("profile-mode-pill").textContent = "Modalidad a domicilio";
+      document.getElementById("profile-description").textContent =
+        w.descripcion || "Trabajador registrado en GOLDENWAR.";
+    }
+
+    actualizarPerfil(selectedWorkerId);
+
+    // ---------------------------
+    // Registro de CLIENTES
+    // ---------------------------
+    const btnRegistrarCliente = document.getElementById("btn-registrar-cliente");
+
+    btnRegistrarCliente.addEventListener("click", function () {
+      const nombre = document.getElementById("cliente-nombre").value.trim();
+      const email = document.getElementById("cliente-email").value.trim();
+      const zona = document.getElementById("cliente-zona").value.trim();
+      const password = document.getElementById("cliente-password").value.trim();
+
+      if (!nombre || !email || !password) {
+        alert("Por favor completa nombre, correo y contraseña.");
+        return;
+      }
+
+      if (clients.some(c => c.email === email)) {
+        alert("Este correo ya está registrado como cliente.");
+        return;
+      }
+
+      const nuevo = {
+        id: Date.now(),
+        nombre,
+        email,
+        zona,
+        password,
+        rol: "cliente"
+      };
+
+      clients.push(nuevo);
+      saveJSON(STORAGE_CLIENTS, clients);
+
+      document.getElementById("cliente-nombre").value = "";
+      document.getElementById("cliente-email").value = "";
+      document.getElementById("cliente-zona").value = "";
+      document.getElementById("cliente-password").value = "";
+
+      actualizarEstadisticas();
+      alert("Cliente registrado correctamente. Ahora puedes iniciar sesión en la sección Login.");
+    });
+
+    // ---------------------------
+    // Registro de TRABAJADORES
+    // ---------------------------
+    const btnRegistrarTrabajador = document.getElementById("btn-registrar-trabajador");
+
+    btnRegistrarTrabajador.addEventListener("click", function () {
+      const nombre = document.getElementById("trabajador-nombre").value.trim();
+      const email = document.getElementById("trabajador-email").value.trim();
+      const oficio = document.getElementById("trabajador-oficio").value.trim();
+      const experiencia = document.getElementById("trabajador-experiencia").value.trim();
+      const tarifa = document.getElementById("trabajador-tarifa").value.trim();
+      const zonaTexto = document.getElementById("trabajador-zona").value.trim();
+      const password = document.getElementById("trabajador-password").value.trim();
+
+      if (!nombre || !email || !oficio || !tarifa || !zonaTexto || !password) {
+        alert("Por favor completa todos los campos básicos.");
+        return;
+      }
+
+      if (workers.some(w => w.email === email)) {
+        alert("Este correo ya está registrado como trabajador.");
+        return;
+      }
+
+      const partes = nombre.split(" ").filter(Boolean);
+      let iniciales = partes.slice(0, 2).map(p => p[0].toUpperCase()).join("");
+      if (!iniciales) iniciales = "NW";
+
+      let categoria = "tutoria";
+      let etiquetaCategoria = "Servicio";
+      const oficioLower = oficio.toLowerCase();
+
+      if (oficioLower.includes("tutor") || oficioLower.includes("clase") || oficioLower.includes("matem")) {
+        categoria = "tutoria";
+        etiquetaCategoria = "Tutoría";
+      } else if (oficioLower.includes("limpieza") || oficioLower.includes("aseo") || oficioLower.includes("domést")) {
+        categoria = "domestico";
+        etiquetaCategoria = "Doméstico";
+      } else if (oficioLower.includes("comput") || oficioLower.includes("red") || oficioLower.includes("técnic")) {
+        categoria = "tecnico";
+        etiquetaCategoria = "Técnico";
+      } else if (oficioLower.includes("cuidado") || oficioLower.includes("niñ") || oficioLower.includes("adult")) {
+        categoria = "cuidado";
+        etiquetaCategoria = "Cuidado";
+      }
+
+      let zona = "centro";
+      const zonaLower = zonaTexto.toLowerCase();
+      if (zonaLower.includes("norte")) zona = "norte";
+      else if (zonaLower.includes("sur")) zona = "sur";
+
+      const nuevoTrabajador = {
+        id: Date.now(),
+        iniciales,
+        nombre,
+        email,
+        descripcion: oficio + (experiencia ? " · " + experiencia : ""),
+        categoria,
+        etiquetaCategoria,
+        zona,
+        etiquetaZona: zonaTexto,
+        tarifa,
+        estrellasProm: 0,
+        totalResenas: 0,
+        password,
+        rol: "trabajador"
+      };
+
+      workers.push(nuevoTrabajador);
+      saveJSON(STORAGE_WORKERS, workers);
+
+      document.getElementById("trabajador-nombre").value = "";
+      document.getElementById("trabajador-email").value = "";
+      document.getElementById("trabajador-oficio").value = "";
+      document.getElementById("trabajador-experiencia").value = "";
+      document.getElementById("trabajador-tarifa").value = "";
+      document.getElementById("trabajador-zona").value = "";
+      document.getElementById("trabajador-password").value = "";
+
+      renderWorkers();
+      actualizarEstadisticas();
+      alert("Trabajador registrado correctamente. Ahora puedes iniciar sesión en la sección Login.");
+    });
+
+    // ---------------------------
+    // LOGIN
+    // ---------------------------
+    const btnLogin = document.getElementById("btn-login");
+    const loginHelper = document.getElementById("login-helper");
+    const dashResumen = document.getElementById("dashboard-resumen");
+    const dashResumenTexto = document.getElementById("dashboard-resumen-texto");
+    const btnLogout = document.getElementById("btn-logout");
+    const dashCliente = document.getElementById("dashboard-cliente");
+    const dashTrabajador = document.getElementById("dashboard-trabajador");
+
+    function guardarSesion(user) {
+      session = user;
+      saveJSON(STORAGE_SESSION, user);
+    }
+
+    function limpiarSesion() {
+      session = null;
+      saveJSON(STORAGE_SESSION, null);
+    }
+
+    function actualizarUISesion() {
+      if (!session) {
+        dashResumenTexto.textContent =
+          "No hay ninguna sesión activa. Cuando inicies sesión, aquí se mostrará un resumen rápido del cliente o trabajador conectado.";
+        btnLogout.classList.add("hidden");
+        dashCliente.style.display = "none";
+        dashTrabajador.style.display = "none";
+        loginHelper.textContent = "*Si no tienes cuenta, regístrate primero en la sección de registro.";
+        return;
+      }
+
+      btnLogout.classList.remove("hidden");
+      if (session.rol === "cliente") {
+        dashResumenTexto.textContent = `Sesión activa como CLIENTE: ${session.nombre} (${session.email})`;
+        dashCliente.style.display = "block";
+        dashTrabajador.style.display = "none";
+
+        document.getElementById("dash-cli-nombre").textContent = session.nombre;
+        document.getElementById("dash-cli-email").textContent = session.email;
+        document.getElementById("dash-cli-zona").textContent = session.zona || "Sin definir";
+        loginHelper.textContent = "Sesión activa como cliente.";
+        document.getElementById("chat-contact-name").textContent = session.nombre;
+      } else if (session.rol === "trabajador") {
+        dashResumenTexto.textContent = `Sesión activa como TRABAJADOR: ${session.nombre} (${session.email})`;
+        dashCliente.style.display = "none";
+        dashTrabajador.style.display = "block";
+
+        document.getElementById("dash-tra-nombre").textContent = session.nombre;
+        document.getElementById("dash-tra-email").textContent = session.email;
+        document.getElementById("dash-tra-zona").textContent = session.etiquetaZona || session.zona || "Sin definir";
+        document.getElementById("dash-tra-cat").textContent = session.etiquetaCategoria || "Servicio";
+        const reseTrab = reviews.filter(r => r.workerId === session.id);
+        document.getElementById("dash-tra-resenas").textContent = reseTrab.length;
+        const prom =
+          reseTrab.length > 0
+            ? (reseTrab.reduce((acc, r) => acc + r.estrellas, 0) / reseTrab.length).toFixed(1)
+            : "N/A";
+        document.getElementById("dash-tra-promedio").textContent = prom;
+        loginHelper.textContent = "Sesión activa como trabajador.";
+      }
+    }
+
+    btnLogin.addEventListener("click", function () {
+      const email = document.getElementById("login-email").value.trim();
+      const pass = document.getElementById("login-pass").value.trim();
+      const rol = document.getElementById("login-rol").value;
+
+      if (!email || !pass) {
+        alert("Completa correo y contraseña.");
+        return;
+      }
+
+      if (rol === "cliente") {
+        const user = clients.find(c => c.email === email && c.password === pass);
+        if (!user) {
+          alert("Cliente no encontrado o contraseña incorrecta.");
+          return;
+        }
+        user.rol = "cliente";
+        guardarSesion(user);
+      } else {
+        const user = workers.find(w => w.email === email && w.password === pass);
+        if (!user) {
+          alert("Trabajador no encontrado o contraseña incorrecta.");
+          return;
+        }
+        user.rol = "trabajador";
+        guardarSesion(user);
+      }
+
+      actualizarUISesion();
+      alert("Has iniciado sesión correctamente.");
+    });
+
+    btnLogout.addEventListener("click", function () {
+      limpiarSesion();
+      actualizarUISesion();
+      alert("Sesión cerrada.");
+    });
+
+    if (session) {
+      actualizarUISesion();
+    }
+
+    // ---------------------------
+    // CHAT (simple, por sesión)
+    // ---------------------------
+    const chatMessagesEl = document.getElementById("chat-messages");
+    const chatInput = document.getElementById("chat-input-text");
+    const chatSendBtn = document.getElementById("chat-send-btn");
+
+    function renderChat() {
+      chatMessagesEl.innerHTML = "";
+      chatMessages.forEach(msg => {
+        const div = document.createElement("div");
+        div.classList.add("bubble");
+        div.classList.add(msg.autor === "cliente" ? "bubble-client" : "bubble-worker");
+        div.textContent = msg.texto;
+        chatMessagesEl.appendChild(div);
+      });
+      chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+    }
+
+    renderChat();
+
+    chatSendBtn.addEventListener("click", function () {
+      const texto = chatInput.value.trim();
+      if (!texto) return;
+
+      const autor = session && session.rol === "trabajador" ? "trabajador" : "cliente";
+
+      chatMessages.push({
+        id: Date.now(),
+        autor,
+        texto
+      });
+
+      saveJSON(STORAGE_CHAT, chatMessages);
+      chatInput.value = "";
+      renderChat();
+    });
+
+    chatInput.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        chatSendBtn.click();
+      }
+    });
+
+    // ---------------------------
+    // EVALUACIONES / REVIEWS
+    // ---------------------------
+    const reviewsContainer = document.getElementById("reviews-container");
+    const ratingScore = document.getElementById("rating-score");
+    const ratingStarsBig = document.getElementById("rating-stars-big");
+    const ratingMeta = document.getElementById("rating-meta");
+    const btnGuardarReview = document.getElementById("btn-guardar-review");
+    const btnCalificar = document.getElementById("btn-calificar");
+
+    function renderReviews() {
+      reviewsContainer.innerHTML = "";
+
+      const currentWorker = workers.find(w => w.id === selectedWorkerId);
+      const workerReviews = reviews.filter(r => r.workerId === selectedWorkerId);
+
+      workerReviews.forEach(r => {
+        const card = document.createElement("div");
+        card.className = "review-card";
+        card.innerHTML = `
+          <div class="avatar" style="width:40px;height:40px;font-size:0.9rem;">
+            ${r.nombre
+              .split(" ")
+              .map(p => p[0])
+              .join("")
+              .toUpperCase()
+              .slice(0, 2)}
+          </div>
+          <div class="review-main">
+            <div class="review-name">${r.nombre}</div>
+            <div class="review-stars">${renderStars(r.estrellas)}</div>
+            <p class="review-text">${r.texto}</p>
+          </div>
+        `;
+        reviewsContainer.appendChild(card);
+      });
+
+      const todas = reviews;
+      const promGlobal =
+        todas.length > 0 ? (todas.reduce((acc, r) => acc + r.estrellas, 0) / todas.length).toFixed(1) : "N/A";
+      ratingScore.textContent = promGlobal;
+      ratingStarsBig.textContent = renderStars(promGlobal);
+      ratingMeta.textContent = `Promedio general de ${todas.length} reseñas.`;
+
+      if (currentWorker) {
+        const promTrab =
+          workerReviews.length > 0
+            ? (workerReviews.reduce((acc, r) => acc + r.estrellas, 0) / workerReviews.length).toFixed(1)
+            : "0.0";
+        currentWorker.estrellasProm = parseFloat(promTrab);
+        currentWorker.totalResenas = workerReviews.length;
+        saveJSON(STORAGE_WORKERS, workers);
+        renderWorkers();
+        actualizarPerfil(selectedWorkerId);
+      }
+      actualizarEstadisticas();
+      if (session && session.rol === "trabajador") {
+        actualizarUISesion();
+      }
+    }
+
+    renderReviews();
+
+    btnGuardarReview.addEventListener("click", function () {
+      const nombre = document.getElementById("review-nombre").value.trim();
+      const estrellas = parseInt(document.getElementById("review-estrellas").value, 10);
+      const texto = document.getElementById("review-texto").value.trim();
+
+      if (!nombre || !texto) {
+        alert("Completa tu nombre y comentario.");
+        return;
+      }
+
+      const nueva = {
+        id: Date.now(),
+        workerId: selectedWorkerId,
+        nombre,
+        estrellas,
+        texto,
+        fecha: new Date().toISOString().slice(0, 10)
+      };
+
+      reviews.push(nueva);
+      saveJSON(STORAGE_REVIEWS, reviews);
+
+      document.getElementById("review-nombre").value = "";
+      document.getElementById("review-estrellas").value = "5";
+      document.getElementById("review-texto").value = "";
+
+      renderReviews();
+      alert("Reseña guardada correctamente.");
+    });
+
+    btnCalificar.addEventListener("click", function () {
+      window.scrollTo({ top: document.getElementById("evaluaciones").offsetTop - 80, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
